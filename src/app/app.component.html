@@ -1,14 +1,18 @@
 <header>
   <h1>My Store</h1>
 </header>
+
+<div class="popup" *ngIf="isProductUpdate">
+  <h2>thank you for updating {{selectedProductName}}</h2>
+</div>
 <main>
   <div class="actions">
     <button>+ Add</button>
     <input placeholder="search products"/>
     <label for="sort">Sort by</label>
-    <select name="sort" id="sort">
+    <select name="sort" id="sort" #sort (change)="sortlistHandler(sort.value)">
       <option value="Recently Added">Recently Added</option>
-      <option value="name">Name</option>
+      <option value="name" >Name</option>
     </select>
   </div>
   <section class="products">
@@ -22,15 +26,29 @@
         <button>Delete</button>
       </li>
     </ul>
-    <div class="product-selected">
-      <h3>product 1 Details</h3>
-      <img src="">
-      <label for="product-name">Name</label>
-      <input id="product-name"/>
-      <label for="product-desc">Name</label>
-      <textarea id="product-desc"></textarea>
-      <label for="number">Name</label>
-      <input type="number" id="product-price"/>
+    <div *ngIf="productSelected.id !== null" class="product-selected">
+      <h3>{{selectedProductName}} Details</h3>
+      <form  [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <img src='{{productSelected.thumbnailImage}}'>
+        <label for="product-name">Name</label>
+        <input 
+          id="product-name" 
+          formControlName="productName"/>
+        <span *ngIf="!productForm.get('productName').valid && productForm.get('productName').touched">dsfasdfsdfsdf</span>
+        <label for="product-desc">Description</label>
+        <textarea 
+          id="product-desc" 
+          formControlName="productDescription"
+          ></textarea>
+        <label for="number">Price</label>
+        <input 
+          type="number" 
+          id="product-price" 
+          formControlName="productPrice"/>
+          <span *ngIf="!productForm.get('productPrice').valid && productForm.get('productPrice').touched">dsfasdfsdfsdf</span>
+          <span *ngIf="productForm.get('productPrice').hasError('min') && productForm.get('productPrice').touched">min</span>
+        <button type="submit" [disabled]="!productForm.valid">save</button>
+      </form>
     </div>
   </section>
 </main>
