@@ -26,8 +26,8 @@
         <button>Delete</button>
       </li>
     </ul>
-    <div *ngIf="productSelected.id !== null" class="product-selected">
-      <h3>{{selectedProductName}} Details</h3>
+    <div *ngIf="productSelected" class="product-selected">
+      <h3>{{productSelected.name}} Details</h3>
       <form  [formGroup]="productForm" (ngSubmit)="onSubmit()">
         <img src='{{productSelected.thumbnailImage}}'>
         <label for="product-name">Name</label>

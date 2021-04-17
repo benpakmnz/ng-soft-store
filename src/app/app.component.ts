@@ -10,34 +10,21 @@ import {products} from '../assets/mock-data';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent{
   title = 'my-store';
   productsList: product[] = [];
-  productSelected: product = { 
-    description: "",
-    id: null,
-    name: "",
-    price: null,
-    urlImage: "",
-    thumbnailImage: "",
-    creationDate: null};
-
-  saveChangesDisabled: boolean = false;
-  selectedProductName: string = "";
+  productSelected: product = null;
   isProductUpdate: boolean = false;
   productForm: FormGroup;
 
-  ngOnInit(){
-  }
 
 constructor(){
   this.productsList = products;
 }
 
   productSelection(productId:number){
-    this.productSelected = Object.assign({},this.productsList[productId]);
-    this.selectedProductName = this.productsList[productId].name;
-
+    this.productSelected = this.productsList[productId];
+    
     this.productForm = new FormGroup({
       'productName': new FormControl(this.productSelected.name, Validators.required),
       'productDescription': new FormControl(this.productSelected.description),
