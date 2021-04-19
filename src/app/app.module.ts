@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,7 +14,6 @@ import { ProductFormComponent } from './components/product-form/product-form.com
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // FormsModule,
     ReactiveFormsModule,
   ],
   providers: [],

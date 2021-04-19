@@ -3,8 +3,7 @@
     border: 1px solid;
     position: relative;
 
-    @media only screen 
-    and (max-device-width: 1024px){ 
+    @media screen and (max-width: 1024px){ 
         height: 440px;
     }
 }
@@ -16,7 +15,7 @@
     height: 30px;
     background: white;
     padding: 0 10px;
-    left: 5px;
+    left: 10px;
 }
 
 .product-form{

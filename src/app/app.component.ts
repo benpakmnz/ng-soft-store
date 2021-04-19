@@ -1,44 +1,60 @@
-import { Component} from '@angular/core';
+import { Component , OnInit, OnDestroy} from '@angular/core';
 import { product } from './Modals/interfaces';
-import { products } from '../assets/mock-data';
+import { ProductsServiceService} from './products-service.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent{
+export class AppComponent implements OnInit, OnDestroy{
   title = 'my-store';
+  getProducts: Subscription;
+  getProductSelected: Subscription;
   productsList: product[] = [];
   productSelected: product = null;
+  subscription: Subscription;
+  isProductUpdatedAproval: boolean = false;
 
-
-  constructor(){
-    this.productsList = products.slice(0, 4);
+  constructor( private ProductsServiceService: ProductsServiceService){
   }
 
-  productSelection(productId:number){
-    this.productSelected = this.productsList[productId];
-  }
-
-  productUpdate(event: product){
-    const productIndex= this.productsList.findIndex(product => product.id === event.id);
-    this.productsList[productIndex] = event;
-    this.productSelected = event;
-  }
-
-  sortlistHandler(event){
-    console.log(event)
-    this.productsList.sort((a,b) => {
-      if ( a.name < b.name ){
-        return 1;
+  ngOnInit(){
+    this.subscription = this.ProductsServiceService.productUpdated
+    .subscribe(
+      (productsList: product[]) => {
+        this.productsList = productsList;
+        this.productUpdateAprovalAlert(true)
+        this.productSelected = this.productsList
+          .find(index => index.id === this.productSelected.id);
       }
-      if ( a.name > b.name ){
-        return -1;
-      }
-      return 0;
-    }
-    )
+    );
+    this.getProductsList();
+  }
+
+  getProductsList(): void {
+    this.getProducts = this.ProductsServiceService.getProductsList(4)
+    .subscribe(products => this.productsList  = products);
+  }
+
+  getProduct(productId:number){
+    this.getProductSelected = this.ProductsServiceService.getProductItem(productId)
+    .subscribe(product => this.productSelected  = product);
   }
   
+  productUpdateHandler(updatedProduct){
+    this.ProductsServiceService.productUpdate(updatedProduct);
+  }
+
+  productUpdateAprovalAlert(isShow){
+    this.isProductUpdatedAproval = isShow;
+    isShow? setTimeout(() => this.isProductUpdatedAproval = false, 3000) : null;
+  }
+
+  ngOnDestroy(){
+    this.getProducts.unsubscribe();
+    this.getProductSelected.unsubscribe();
+    this.subscription.unsubscribe();
+  }
 }

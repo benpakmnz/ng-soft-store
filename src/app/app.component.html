@@ -3,10 +3,14 @@
 </header>
 <div class="actions">
   <button class="action-btn add">Add</button>
-  <input class="search-input" placeholder="search products"/>
+  <div class="search-input">
+    <button>+</button>
+    <input class="" placeholder="search products"/>
+  </div>
+
   <div class="select-group">
     <label for="sort">Sort by</label>
-    <select name="sort" id="sort" #sort (change)="sortlistHandler(sort.value)">
+    <select name="sort" id="sort" #sort>
       <option value="Recently Added">Recently Added</option>
       <option value="name" >Name</option>
     </select>
@@ -15,7 +19,7 @@
 <main>
   <section class="products-container">
     <ul class="product-list" *ngIf="productsList.length > 0">
-      <li class="product-item" *ngFor="let product of productsList; let i = index" (click)="productSelection(i)">
+      <li class="product-item" [ngClass]="{'selected': productSelected && product.id === productSelected.id}" *ngFor="let product of productsList; let i = index" (click)="getProduct(product.id)">
         <img class="product-thumb" src='{{product.thumbnailImage}}'/>
         <div>
           <h2>{{product.name}}</h2>
@@ -24,11 +28,25 @@
         <button class="action-btn">Delete</button>
       </li>
     </ul>
+    <div class="pagination-container">
+      <div class="pagination">
+        <a>< Prev Page</a>
+        <p>1 of 6</p>
+        <a>next Page ></a>
+      </div>
+    </div>
   </section>
   <app-product-form
     class="selected-product-container"
     *ngIf="productSelected" 
     [productSelected]="productSelected" 
-    (updatedProduct)="productUpdate($event)"
+    (updatedProduct)="productUpdateHandler($event)"
   ></app-product-form>
 </main>
+
+<div class="alert-notification" *ngIf="isProductUpdatedAproval">
+  <div class="alert-inner">
+    <button (click)="productUpdateAprovalAlert(false)">X</button>
+    <p>thank you for updating {{productSelected.name}}</p>
+  </div>
+</div>

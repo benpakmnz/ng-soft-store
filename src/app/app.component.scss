@@ -10,12 +10,19 @@ header{
 
 .products-container, .actions{
     width: 55%;
+    position: relative;
 
-    @media only screen 
-        and (max-device-width: 1024px){ 
-            width: 100%;
+    @media screen and (max-width: 1024px){ 
+        width: 100%;
     }
 
+}
+
+.pagination-container{
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    width: 100%;
 }
 
 main, .actions{
@@ -47,8 +54,7 @@ main{
     justify-content: space-between;
     box-sizing: border-box;
 
-    @media only screen 
-        and (max-device-width: 1024px){ 
+    @media screen and (max-width: 1024px){ 
             flex-direction: column;
     }
 
@@ -71,6 +77,15 @@ main{
                 &:not(:last-of-type){
                     margin-bottom: 20px;
                 }
+
+                &.selected{
+                    background-color: #1a2121;
+                    color: white;
+
+                    .action-btn{
+                        border: 1px solid white;
+                    }
+                }
     
                 .product-thumb{
                     width: 110px;
@@ -84,8 +99,7 @@ main{
                     align-self: flex-end;
                     margin-left:auto;
 
-                    @media only screen 
-                    and (max-device-width: 1024px){ 
+                    @media screen             and (max-width: 1024px){ 
                         position: absolute;
                         top: 10px;
                         right: 10px;
@@ -94,8 +108,7 @@ main{
 
                 }
 
-                @media only screen 
-                and (max-device-width: 1024px){ 
+                @media screen         and (max-width: 1024px){ 
                     p{
                         width: 100%;
                     }
@@ -112,10 +125,39 @@ main{
         .selected-product-container{
             width: 40%;
 
-            @media only screen 
-            and (max-device-width: 1024px){ 
+            @media screen     and (max-width: 1024px){ 
                 width: 100%;
                 margin-top: 45px;
             }
         }
+}
+
+
+.search-input{
+    width: 55%;
+    position: relative;
+
+    input{
+        border: 1px solid;
+        outline: 0;
+        width: 100%;
+        border-radius: 20px;
+        height: 30px;
+        padding: 0 10px 0 30px;
+        box-sizing: border-box;
+
+        
+    &:focus, &:active{
+        background-color: gainsboro;
+    }
+    }
+
+    button{
+        background-color: transparent;
+        border: 0;
+        position: absolute;
+        top: 16px;
+        left: 20px;
+    }
+
 }
