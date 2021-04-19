@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-// import { NgForm } from '@angular/forms';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { Component} from '@angular/core';
 import { product } from './Modals/interfaces';
-import {products} from '../assets/mock-data';
+import { products } from '../assets/mock-data';
 
 @Component({
   selector: 'app-root',
@@ -14,26 +11,20 @@ export class AppComponent{
   title = 'my-store';
   productsList: product[] = [];
   productSelected: product = null;
-  isProductUpdate: boolean = false;
-  productForm: FormGroup;
 
 
-constructor(){
-  this.productsList = products;
-}
+  constructor(){
+    this.productsList = products.slice(0, 4);
+  }
 
   productSelection(productId:number){
     this.productSelected = this.productsList[productId];
-    
-    this.productForm = new FormGroup({
-      'productName': new FormControl(this.productSelected.name, Validators.required),
-      'productDescription': new FormControl(this.productSelected.description),
-      'productPrice': new FormControl(this.productSelected.price, [Validators.min(10),Validators.required])
-    })
   }
 
-  onSubmit(){
-    console.log(this.productForm)
+  productUpdate(event: product){
+    const productIndex= this.productsList.findIndex(product => product.id === event.id);
+    this.productsList[productIndex] = event;
+    this.productSelected = event;
   }
 
   sortlistHandler(event){
@@ -49,4 +40,5 @@ constructor(){
     }
     )
   }
+  
 }

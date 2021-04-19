@@ -1,54 +1,34 @@
 <header>
   <h1>My Store</h1>
 </header>
-
-<div class="popup" *ngIf="isProductUpdate">
-  <h2>thank you for updating {{selectedProductName}}</h2>
-</div>
-<main>
-  <div class="actions">
-    <button>+ Add</button>
-    <input placeholder="search products"/>
+<div class="actions">
+  <button class="action-btn add">Add</button>
+  <input class="search-input" placeholder="search products"/>
+  <div class="select-group">
     <label for="sort">Sort by</label>
     <select name="sort" id="sort" #sort (change)="sortlistHandler(sort.value)">
       <option value="Recently Added">Recently Added</option>
       <option value="name" >Name</option>
     </select>
   </div>
-  <section class="products">
+</div>
+<main>
+  <section class="products-container">
     <ul class="product-list" *ngIf="productsList.length > 0">
-      <li class="product" *ngFor="let product of productsList; let i = index" (click)="productSelection(i)">
-        <img src='{{product.thumbnailImage}}'>
+      <li class="product-item" *ngFor="let product of productsList; let i = index" (click)="productSelection(i)">
+        <img class="product-thumb" src='{{product.thumbnailImage}}'/>
         <div>
           <h2>{{product.name}}</h2>
           <p>{{product.description}}</p>
         </div>
-        <button>Delete</button>
+        <button class="action-btn">Delete</button>
       </li>
     </ul>
-    <div *ngIf="productSelected" class="product-selected">
-      <h3>{{productSelected.name}} Details</h3>
-      <form  [formGroup]="productForm" (ngSubmit)="onSubmit()">
-        <img src='{{productSelected.thumbnailImage}}'>
-        <label for="product-name">Name</label>
-        <input 
-          id="product-name" 
-          formControlName="productName"/>
-        <span *ngIf="!productForm.get('productName').valid && productForm.get('productName').touched">dsfasdfsdfsdf</span>
-        <label for="product-desc">Description</label>
-        <textarea 
-          id="product-desc" 
-          formControlName="productDescription"
-          ></textarea>
-        <label for="number">Price</label>
-        <input 
-          type="number" 
-          id="product-price" 
-          formControlName="productPrice"/>
-          <span *ngIf="!productForm.get('productPrice').valid && productForm.get('productPrice').touched">dsfasdfsdfsdf</span>
-          <span *ngIf="productForm.get('productPrice').hasError('min') && productForm.get('productPrice').touched">min</span>
-        <button type="submit" [disabled]="!productForm.valid">save</button>
-      </form>
-    </div>
   </section>
+  <app-product-form
+    class="selected-product-container"
+    *ngIf="productSelected" 
+    [productSelected]="productSelected" 
+    (updatedProduct)="productUpdate($event)"
+  ></app-product-form>
 </main>

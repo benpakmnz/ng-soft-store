@@ -1,0 +1,121 @@
+header{
+    color: white;
+    background-color: gray;
+    padding: 10px 15px;
+
+    h1{
+        display: inline-block;
+    }
+}
+
+.products-container, .actions{
+    width: 55%;
+
+    @media only screen 
+        and (max-device-width: 1024px){ 
+            width: 100%;
+    }
+
+}
+
+main, .actions{
+    margin: 20px 15px;
+}
+
+
+.actions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .search-input{
+        width: 55%;
+        border-radius: 25px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .select-group{
+        width: 25%;
+        margin-right: 20px;
+        text-align: right;
+    }
+}
+
+main{
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+
+    @media only screen 
+        and (max-device-width: 1024px){ 
+            flex-direction: column;
+    }
+
+  
+        .product-list{
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+    
+            .product-item{
+                display: flex;
+                width: 100%;
+                height: 100px;
+                position: relative;
+                border: 1px solid black;
+                padding: 10px;
+                box-sizing: border-box;
+                cursor: pointer;
+
+                &:not(:last-of-type){
+                    margin-bottom: 20px;
+                }
+    
+                .product-thumb{
+                    width: 110px;
+                    height: 100%;
+                    margin-right: 15px;
+                    object-fit: cover;
+                    border: 1px solid;
+                }
+    
+                .action-btn{
+                    align-self: flex-end;
+                    margin-left:auto;
+
+                    @media only screen 
+                    and (max-device-width: 1024px){ 
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                    }
+                    
+
+                }
+
+                @media only screen 
+                and (max-device-width: 1024px){ 
+                    p{
+                        width: 100%;
+                    }
+
+                    div {
+                        width: 59%;
+                    }
+                }
+
+
+            }
+        }
+
+        .selected-product-container{
+            width: 40%;
+
+            @media only screen 
+            and (max-device-width: 1024px){ 
+                width: 100%;
+                margin-top: 45px;
+            }
+        }
+}

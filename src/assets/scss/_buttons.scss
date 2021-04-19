@@ -1,0 +1,23 @@
+
+button{
+    cursor: pointer;
+}
+
+.action-btn{
+    font-size: 14px;
+    background-color: darkslategray;
+    border-radius: 25px;
+    box-shadow: none;
+    padding: 5px 25px;
+    color: white;
+    border: none;
+
+    &.add:before{
+        content: '+';
+    }
+
+    &[disabled]{
+        background-color: rgb(115, 138, 138);
+        cursor: default;
+    }
+}
