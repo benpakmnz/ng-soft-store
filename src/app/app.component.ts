@@ -14,20 +14,21 @@ export class AppComponent implements OnInit, OnDestroy{
   getProductSelected: Subscription;
   productsList: product[] = [];
   productSelected: product = null;
-  subscription: Subscription;
+  porductUpdateSubscription: Subscription;
   isProductUpdatedAproval: boolean = false;
 
   constructor( private ProductsServiceService: ProductsServiceService){
   }
 
   ngOnInit(){
-    this.subscription = this.ProductsServiceService.productUpdated
+    this.porductUpdateSubscription = this.ProductsServiceService.updateList
     .subscribe(
       (productsList: product[]) => {
         this.productsList = productsList;
-        this.productUpdateAprovalAlert(true)
-        this.productSelected = this.productsList
-          .find(index => index.id === this.productSelected.id);
+        if(this.productSelected){
+          this.productUpdateAprovalAlert(true);
+          this.productSelected = this.productsList.find(index => index.id === this.productSelected.id);
+        }
       }
     );
     this.getProductsList();
@@ -52,9 +53,17 @@ export class AppComponent implements OnInit, OnDestroy{
     isShow? setTimeout(() => this.isProductUpdatedAproval = false, 3000) : null;
   }
 
+  sortProducts(sortBy: string){
+    this.ProductsServiceService.sortList(sortBy);
+  }
+
+  filterListHandler(value: string){
+    this.ProductsServiceService.filterList(value);
+  }
+
   ngOnDestroy(){
     this.getProducts.unsubscribe();
     this.getProductSelected.unsubscribe();
-    this.subscription.unsubscribe();
+    this.porductUpdateSubscription.unsubscribe();
   }
 }

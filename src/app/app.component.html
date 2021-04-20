@@ -1,25 +1,29 @@
 <header>
   <h1>My Store</h1>
 </header>
-<div class="actions">
-  <button class="action-btn add">Add</button>
-  <div class="search-input">
-    <button>+</button>
-    <input class="" placeholder="search products"/>
-  </div>
-
-  <div class="select-group">
-    <label for="sort">Sort by</label>
-    <select name="sort" id="sort" #sort>
-      <option value="Recently Added">Recently Added</option>
-      <option value="name" >Name</option>
-    </select>
+<div class="actions-container">
+  <div class="actions">
+    <button class="action-btn add">Add</button>
+    <div class="search-input">
+      <button>+</button>
+      <input placeholder="search products" #filter (keyup)= "filterListHandler(filter.value)"/>
+    </div>
+  
+    <div class="select-group">
+      <label for="sort">Sort by</label>
+      <select name="sort" id="sort" #sort (change)="sortProducts(sort.value)">
+        <option value="creationDate">Recently Added</option>
+        <option value="name" >Name</option>
+      </select>
+    </div>
   </div>
 </div>
 <main>
   <section class="products-container">
     <ul class="product-list" *ngIf="productsList.length > 0">
-      <li class="product-item" [ngClass]="{'selected': productSelected && product.id === productSelected.id}" *ngFor="let product of productsList; let i = index" (click)="getProduct(product.id)">
+      <li class="product-item" 
+          [ngClass]="{'selected': productSelected && product.id === productSelected.id}" 
+          *ngFor="let product of productsList; let i = index" (click)="getProduct(product.id)">
         <img class="product-thumb" src='{{product.thumbnailImage}}'/>
         <div>
           <h2>{{product.name}}</h2>

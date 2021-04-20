@@ -10,7 +10,7 @@ import { Subject } from 'rxjs/Subject';
   providedIn: 'root'
 })
 export class ProductsServiceService {
-  productUpdated = new Subject<product[]>();
+  updateList = new Subject<product[]>();
   productsPerPage: number = null; 
   private productsList: product[] = [];
   constructor() {}
@@ -19,6 +19,7 @@ export class ProductsServiceService {
   getProductsList(resultsAmount):Observable<product[]>{
     this.productsPerPage = resultsAmount;
     this.productsList = products;
+    this.sortList('creationDate');
     return of(this.productsList.slice(0,resultsAmount))
     .pipe(delay(2000))
   }
@@ -28,23 +29,28 @@ export class ProductsServiceService {
   }
 
   productUpdate(updatedProduct: product){
-    const productIndex= this.productsList.findIndex(product => product.id === updatedProduct.id);
-    this.productsList[productIndex] = updatedProduct;
-    this.productUpdated.next(this.productsList.slice(0 , this.productsPerPage))
+    const productIndex= products.findIndex(product => product.id === updatedProduct.id);
+    products[productIndex] = updatedProduct;
+    this.productsList = products;
+    this.updateList.next(this.productsList.slice(0 , this.productsPerPage))
   }
 
-  // sortList(type: string){
-  //   this.productsList.sort((a,b) => {
-  //     if ( a.name < b.name ){
-  //       return 1;
-  //     }
-  //     if ( a.name > b.name ){
-  //       return -1;
-  //     }
-  //     return 0;
-  //   }
-  //   )
-  //   this.getProductsList(this.productsPerPage)
-  //   console.log(this.productsList)
-  // }
+  sortList(sortBy: string){
+    switch (sortBy){
+      case 'name':
+        this.productsList.sort((a,b) => a.name > b.name? 1: -1)
+      break;
+      case 'creationDate':
+        this.productsList.sort((a,b) => a.creationDate > b.creationDate? 1: -1)
+    }
+
+    this.updateList.next(this.productsList.slice(0 , this.productsPerPage))
+  }
+
+  filterList(value: string){
+    console.log(value)
+    this.productsList = products.filter(product => product.name.includes(value))
+    console.log(this.productsList)
+    this.updateList.next(this.productsList.slice(0 , this.productsPerPage))
+  }
 }

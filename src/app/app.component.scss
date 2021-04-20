@@ -1,10 +1,9 @@
 header{
     color: white;
     background-color: gray;
-    padding: 10px 15px;
 
     h1{
-        display: inline-block;
+        display: block;
     }
 }
 
@@ -25,11 +24,6 @@ header{
     width: 100%;
 }
 
-main, .actions{
-    margin: 20px 15px;
-}
-
-
 .actions{
     display: flex;
     justify-content: space-between;
@@ -43,9 +37,10 @@ main, .actions{
     }
 
     .select-group{
-        width: 25%;
-        margin-right: 20px;
-        text-align: right;
+        width: 195px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 }
 
