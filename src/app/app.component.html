@@ -42,15 +42,6 @@
   </section>
   <app-product-form
     class="selected-product-container"
-    *ngIf="productSelected" 
-    [productSelected]="productSelected" 
-    (updatedProduct)="productUpdateHandler($event)"
+    *ngIf="productSelected.id != null" 
   ></app-product-form>
 </main>
-
-<div class="alert-notification" *ngIf="isProductUpdatedAproval">
-  <div class="alert-inner">
-    <button (click)="productUpdateAprovalAlert(false)">X</button>
-    <p>thank you for updating {{productSelected.name}}</p>
-  </div>
-</div>

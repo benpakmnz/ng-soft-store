@@ -13,9 +13,17 @@ export class AppComponent implements OnInit, OnDestroy{
   getProducts: Subscription;
   getProductSelected: Subscription;
   productsList: product[] = [];
-  productSelected: product = null;
+  productSelected: product = {
+    description: "",
+    id: null,
+    name: "",
+    price: null,
+    urlImage: "",
+    thumbnailImage: "",
+    creationDate: null
+  };
   porductUpdateSubscription: Subscription;
-  isProductUpdatedAproval: boolean = false;
+  getProductSubscription: Subscription;
 
   constructor( private ProductsServiceService: ProductsServiceService){
   }
@@ -25,10 +33,12 @@ export class AppComponent implements OnInit, OnDestroy{
     .subscribe(
       (productsList: product[]) => {
         this.productsList = productsList;
-        if(this.productSelected){
-          this.productUpdateAprovalAlert(true);
-          this.productSelected = this.productsList.find(index => index.id === this.productSelected.id);
-        }
+      }
+    );
+    this.getProductSubscription = this.ProductsServiceService.updateSelectedProduct
+    .subscribe(
+      (productSelected: product) => {
+        this.productSelected = productSelected;
       }
     );
     this.getProductsList();
@@ -40,17 +50,7 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   getProduct(productId:number){
-    this.getProductSelected = this.ProductsServiceService.getProductItem(productId)
-    .subscribe(product => this.productSelected  = product);
-  }
-  
-  productUpdateHandler(updatedProduct){
-    this.ProductsServiceService.productUpdate(updatedProduct);
-  }
-
-  productUpdateAprovalAlert(isShow){
-    this.isProductUpdatedAproval = isShow;
-    isShow? setTimeout(() => this.isProductUpdatedAproval = false, 3000) : null;
+    this.ProductsServiceService.getProductItem(productId)
   }
 
   sortProducts(sortBy: string){

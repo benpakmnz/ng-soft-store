@@ -1,11 +1,7 @@
 .product-selected {
-    height: 100%;
+    height: 460px;
     border: 1px solid;
     position: relative;
-
-    @media screen and (max-width: 1024px){ 
-        height: 440px;
-    }
 }
 
 .product-selected-title{

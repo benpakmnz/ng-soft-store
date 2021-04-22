@@ -35,4 +35,10 @@
       </div>
       <button class="action-btn" type="submit" [disabled]="!productForm.valid || !productForm.dirty">save</button>
     </form>
+
+    <div class="alert-notification" *ngIf="isProductUpdatedAproval">
+      <button (click)="productUpdateAprovalAlert(false)">X</button>
+      <p>thank you for updating {{approvalName}}</p>
+    </div>
+
   </div>
