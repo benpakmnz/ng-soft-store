@@ -1,47 +1,4 @@
 <header>
   <h1>My Store</h1>
 </header>
-<div class="actions-container">
-  <div class="actions">
-    <button class="action-btn add">Add</button>
-    <div class="search-input">
-      <button>+</button>
-      <input placeholder="search products" #filter (keyup)= "filterListHandler(filter.value)"/>
-    </div>
-  
-    <div class="select-group">
-      <label for="sort">Sort by</label>
-      <select name="sort" id="sort" #sort (change)="sortProducts(sort.value)">
-        <option value="creationDate">Recently Added</option>
-        <option value="name" >Name</option>
-      </select>
-    </div>
-  </div>
-</div>
-<main>
-  <section class="products-container">
-    <ul class="product-list" *ngIf="productsList.length > 0">
-      <li class="product-item" 
-          [ngClass]="{'selected': productSelected && product.id === productSelected.id}" 
-          *ngFor="let product of productsList; let i = index" (click)="getProduct(product.id)">
-        <img class="product-thumb" src='{{product.thumbnailImage}}'/>
-        <div>
-          <h2>{{product.name}}</h2>
-          <p>{{product.description}}</p>
-        </div>
-        <button class="action-btn">Delete</button>
-      </li>
-    </ul>
-    <div class="pagination-container">
-      <div class="pagination">
-        <a>< Prev Page</a>
-        <p>1 of 6</p>
-        <a>next Page ></a>
-      </div>
-    </div>
-  </section>
-  <app-product-form
-    class="selected-product-container"
-    *ngIf="productSelected.id != null" 
-  ></app-product-form>
-</main>
+<router-outlet></router-outlet>

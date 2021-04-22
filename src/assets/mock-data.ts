@@ -1,7 +1,7 @@
-import {product} from '../app/Modals/interfaces';
+import {productInterface} from '../app/Modals/interfaces';
 
 
-export const productsData: product[] = [
+export const productsData: productInterface[] = [
     {
     id: 123456,
     name: "product1",

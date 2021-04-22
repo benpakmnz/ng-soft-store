@@ -1,8 +1,9 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProductsServiceService} from '../../products-service.service';
+import { ProductsService} from '../../products-service.service';
 import { Subscription } from 'rxjs/Subscription';
-import { product } from '../../Modals/interfaces';
+import { productInterface } from '../../Modals/interfaces';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-product-form',
@@ -10,7 +11,7 @@ import { product } from '../../Modals/interfaces';
   styleUrls: ['./product-form.component.scss']
 })
 export class ProductFormComponent implements OnInit{
-  productSelected: product = {
+  productSelected: productInterface = {
     description: "",
     id: null,
     name: "",
@@ -33,22 +34,24 @@ export class ProductFormComponent implements OnInit{
     required: 'This field is required',
     minPrice: 'Price must be greater then 0'
   };
-  constructor( private ProductsServiceService: ProductsServiceService ) { 
+  constructor(private route: ActivatedRoute, private ProductsService: ProductsService ) { 
   }
 
   ngOnInit(){
-    this.getProduct = this.ProductsServiceService.getProduct()
-    .subscribe(product => {
-      this.productSelected = product
-      this.formInit()
-    });
+    this.route.params.subscribe(
+      (params: Params) => {
+        this.getProduct = this.ProductsService.getProduct(params.id)
+        .subscribe(product => {
+          this.productSelected = product
+          this.formInit()
+        });
+      }
+    )
 
-    this.getProductChanges = this.ProductsServiceService.updateSelectedProduct
-    .subscribe((product:product) => {
-        if(this.productSelected.id === product.id){
-          this.approvalName=this.productSelected.name
-          this.productUpdateAprovalAlert(true);
-        }
+    this.getProductChanges = this.ProductsService.updateSelectedProduct
+    .subscribe((product:productInterface) => {
+        this.approvalName=this.productSelected.name
+        this.productUpdateAprovalAlert(true);
         this.productSelected = product;
         this.formInit()
     })
@@ -64,7 +67,7 @@ export class ProductFormComponent implements OnInit{
   }
 
   onSubmit(){
-    this.ProductsServiceService.productUpdate({...this.productSelected, ...this.productForm.value});
+    this.ProductsService.productUpdate({...this.productSelected, ...this.productForm.value});
   }
 
   productUpdateAprovalAlert(isShow){

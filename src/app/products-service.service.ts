@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import {product} from '../app/Modals/interfaces';
+import {productInterface} from './Modals/interfaces';
 import {productsData} from '../assets/mock-data';
 import { Subject } from 'rxjs/Subject';
 
@@ -9,16 +9,16 @@ import { Subject } from 'rxjs/Subject';
 @Injectable({
   providedIn: 'root'
 })
-export class ProductsServiceService {
-  updateList = new Subject<product[]>();
-  updateSelectedProduct = new Subject<product>();
+export class ProductsService {
+  updateList = new Subject<productInterface[]>();
+  updateSelectedProduct = new Subject<productInterface>();
   productsPerPage: number = null; 
-  private productsList: product[] = [];
-  private selectedProduct: product;
+  private productsList: productInterface[] = [];
+  private selectedProduct: productInterface;
   constructor() {}
 
 
-  getProductsList(resultsAmount):Observable<product[]>{
+  getProductsList(resultsAmount):Observable<productInterface[]>{
     this.productsPerPage = resultsAmount;
     this.productsList = productsData;
     this.sortList('creationDate');
@@ -26,16 +26,11 @@ export class ProductsServiceService {
     .pipe(delay(2000))
   }
 
-  getProductItem(productId: number){
-    this.selectedProduct = productsData.find(product => product.id === productId)
-    this.updateSelectedProduct.next(this.selectedProduct);
+  getProduct(productId:number):Observable<productInterface>{
+    return of(productsData.find(product => product.id === Number(productId)))
   }
 
-  getProduct():Observable<product>{
-    return of(this.selectedProduct)
-  }
-
-  productUpdate(updatedProduct: product){
+  productUpdate(updatedProduct: productInterface){
     const productIndex= productsData.findIndex(product => product.id === updatedProduct.id);
     productsData[productIndex] = updatedProduct;
     this.selectedProduct = updatedProduct;
@@ -57,7 +52,13 @@ export class ProductsServiceService {
   }
 
   filterList(value: string){
-    this.productsList = productsData.filter(product => product.name.includes(value))
+    this.productsList = productsData.filter(product => {
+      if(product.name.includes(value)){
+        return product.name.includes(value)
+      }else{
+        return product.description.includes(value)
+      }
+    });
     this.updateList.next(this.productsList.slice(0 , this.productsPerPage))
   }
 }

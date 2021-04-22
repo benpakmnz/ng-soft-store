@@ -1,0 +1,46 @@
+<div class="actions-container">
+  <div class="actions">
+    <button class="action-btn add">Add</button>
+    <div class="search-input">
+      <input placeholder="search products" #filter (keyup)= "filterListHandler(filter.value)"/>
+    </div>
+  
+    <div class="select-group">
+      <label for="sort">Sort by:</label>
+      <select name="sort" id="sort" #sort (change)="sortProducts(sort.value)">
+        <option value="creationDate">Recently Added</option>
+        <option value="name" >Name</option>
+      </select>
+    </div>
+  </div>
+</div>
+<main>
+  <section class="products-container">
+    <ul class="product-list" *ngIf="productsList.length > 0">
+      <li *ngFor="let product of productsList; let i = index" routerLinkActive="active">
+          <a class="product-item" routerLink="/products/{{product.id}}">
+            <img class="product-thumb" src='{{product.thumbnailImage}}'/>
+            <div>
+              <h2>{{product.name}}</h2>
+              <p>{{product.description}}</p>
+            </div>
+        </a>
+        <button class="action-btn" [ngClass]="{'mobile': isMobile}">
+            <span *ngIf="!isMobile">Delete</span>
+        </button>
+        <router-outlet *ngIf="isMobile && product.id === productSelectedId"></router-outlet>
+      </li>
+    </ul>
+    <div class="pagination-container">
+      <div class="pagination">
+        <a>< Prev Page</a>
+        <p>1 of 6</p>
+        <a>next Page ></a>
+      </div>
+    </div>
+  </section>
+  <section class="product-form-container">
+    <router-outlet *ngIf="!isMobile"></router-outlet>
+  </section>
+
+</main>

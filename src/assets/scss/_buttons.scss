@@ -9,12 +9,16 @@ button{
 
 .action-btn{
     background-color: darkslategray;
-    border-radius: 25px;
     padding: 5px 25px;
     color: white;
+    line-height: 17px;
 
     &.add:before{
-        content: '+';
+        content: "+";
+        font-size: 20px;
+        display: inline-block;
+        margin-right: 5px;
+        vertical-align: text-bottom;
     }
 
     &[disabled]{
