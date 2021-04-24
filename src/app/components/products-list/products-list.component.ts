@@ -20,11 +20,12 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private ProductsServiceService: ProductsService){}
 
   ngOnInit(){
+    if(this.route.firstChild){
       this.route.firstChild.params.subscribe(
           (params: Params) => {
             this.productSelectedId = Number(params.id);
-      }
-    )
+      })
+    };
     this.porductUpdateSubscription = this.ProductsServiceService.updateList
     .subscribe(
       (productsList: productInterface[]) => {
