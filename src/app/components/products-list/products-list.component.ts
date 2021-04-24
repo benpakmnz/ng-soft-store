@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, HostListener } from '@angular/core';
 import { productInterface } from '../../Modals/interfaces';
 import { ProductsService} from '../../products-service.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -10,7 +10,7 @@ import { ActivatedRoute, Params } from '@angular/router';
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss']
 })
-export class ProductsListComponent implements OnInit, OnDestroy {
+export class ProductsListComponent implements OnInit,OnChanges, OnDestroy {
   getProducts: Subscription;
   productsList: productInterface[] = [];
   porductUpdateSubscription: Subscription;
@@ -20,12 +20,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private ProductsServiceService: ProductsService){}
 
   ngOnInit(){
-    if(this.route.firstChild){
-      this.route.firstChild.params.subscribe(
-          (params: Params) => {
-            this.productSelectedId = Number(params.id);
-      })
-    };
+    this.subscribeSelectedProduct();
     this.porductUpdateSubscription = this.ProductsServiceService.updateList
     .subscribe(
       (productsList: productInterface[]) => {
@@ -36,9 +31,24 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.getProductsList();
   }
 
+  ngOnChanges(){
+    this.subscribeSelectedProduct();
+  }
+
+  subscribeSelectedProduct(){
+    if(this.route.firstChild){
+      this.route.firstChild.params.subscribe(
+        (params: Params) => {
+          this.productSelectedId = Number(params.id);
+      })
+    }
+  }
+
   getProductsList(): void {
     this.getProducts = this.ProductsServiceService.getProductsList(4)
-    .subscribe(products => this.productsList  = products);
+    .subscribe(products => {
+      this.productsList  = products
+    });
   }
 
   sortProducts(sortBy: string){
@@ -48,10 +58,6 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   filterListHandler(value: string){
     this.ProductsServiceService.filterList(value);
   }
-
-  // setSelected(productId:number){
-  //   this.productSelectedId = productId;
-  // }
 
   @HostListener('window:resize', ['$event'])
     onResize(event) {
