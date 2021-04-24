@@ -7,6 +7,11 @@
     }
 }
 
+.products-container, .product-form-container{
+    height: 460px;
+}
+
+
 .pagination-container{
     display: flex;
     justify-content: flex-end;
@@ -127,6 +132,8 @@ main{
         margin: 0;
         padding: 0;
         list-style-type: none;
+        height: 100%;
+        box-sizing: border-box;
 
         li{
             position: relative;
@@ -203,6 +210,11 @@ main{
             }
         }
 
+        }
+
+        &.not-found{
+            display: flex;
+            align-items: center;
         }
 
     .product-form-container{

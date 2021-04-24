@@ -16,7 +16,7 @@
 </div>
 <main>
   <section class="products-container">
-    <ul class="product-list" *ngIf="productsList.length > 0">
+    <ul class="product-list" *ngIf="productsList.length > 0;else no_results">
       <li *ngFor="let product of productsList; let i = index" routerLinkActive="active">
           <a class="product-item" routerLink="/products/{{product.id}}">
             <img class="product-thumb" src='{{product.thumbnailImage}}'/>
@@ -31,6 +31,12 @@
         <router-outlet *ngIf="isMobile && product.id === productSelectedId"></router-outlet>
       </li>
     </ul>
+    <ng-template #no_results>
+      <div class="product-list not-found">
+        <img src="../../../assets/images/icons/error.svg"/>
+        no results found....
+      </div>
+    </ng-template>
     <div class="pagination-container">
       <div class="pagination">
         <a>< Prev Page</a>
