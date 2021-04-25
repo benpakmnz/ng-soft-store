@@ -203,12 +203,26 @@ main{
             }
         }
 
-        }
-
         &.not-found{
             display: flex;
             align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            height: 460px;
+            background: #2f4f4f21;
+            border: 1px solid black;
+
+            img{
+                height: 50%;
+
+            }
+
+            @media screen and (max-width: 1024px){
+                height: 250px;
+            } 
         }
+
+    }
 
     .product-form-container{
         width: 40%;

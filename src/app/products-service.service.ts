@@ -12,7 +12,6 @@ import { Subject } from 'rxjs/Subject';
 export class ProductsService {
   updateList = new Subject<productInterface[]>();
   updateSelectedProduct = new Subject<productInterface>();
-  selectedProductId=new Subject<number>();
   productsPerPage: number = null; 
   sortVal: string = '';
   filterVal: string = '';
@@ -30,8 +29,7 @@ export class ProductsService {
   }
 
   getProduct(productId:number):Observable<productInterface>{
-    this.selectedProductId.next(productId);
-    return of(productsData.find(product => product.id === Number(productId)));
+    return of(productsData.find(product => product.id === Number(productId)))
   }
 
   productUpdate(updatedProduct: productInterface){
