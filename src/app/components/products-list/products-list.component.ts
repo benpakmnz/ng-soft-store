@@ -1,47 +1,40 @@
-import { Component, OnInit, OnDestroy, OnChanges, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { productInterface } from '../../Modals/interfaces';
 import { ProductsService} from '../../products-service.service';
 import { Subscription } from 'rxjs/Subscription';
-import { ActivatedRoute, Params } from '@angular/router';
-
 
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss']
 })
-export class ProductsListComponent implements OnInit,OnChanges, OnDestroy {
+export class ProductsListComponent implements OnInit, OnDestroy {
   getProducts: Subscription;
   productsList: productInterface[] = [];
   porductUpdateSubscription: Subscription;
-  productSelectedId: number;
+  productSelectedSubscription: Subscription;
+  productSelectedId: number = null;
   isMobile: boolean = false;
 
-  constructor(private route: ActivatedRoute, private ProductsServiceService: ProductsService){}
+  constructor(private ProductsServiceService: ProductsService){}
 
   ngOnInit(){
-    this.subscribeSelectedProduct();
     this.porductUpdateSubscription = this.ProductsServiceService.updateList
     .subscribe(
       (productsList: productInterface[]) => {
         this.productsList = productsList;
       }
     );
-    this.isMobile = window.innerWidth <= 670;
+    this.productSelectedSubscription = this.ProductsServiceService.selectedProductId
+    .subscribe(
+      (productId: number) => {
+        console.log(productId)
+        this.productSelectedId = Number(productId);
+      }
+    )
+
+    this.isMobile = window.innerWidth <= 1024;
     this.getProductsList();
-  }
-
-  ngOnChanges(){
-    this.subscribeSelectedProduct();
-  }
-
-  subscribeSelectedProduct(){
-    if(this.route.firstChild){
-      this.route.firstChild.params.subscribe(
-        (params: Params) => {
-          this.productSelectedId = Number(params.id);
-      })
-    }
   }
 
   getProductsList(): void {
@@ -60,8 +53,8 @@ export class ProductsListComponent implements OnInit,OnChanges, OnDestroy {
   }
 
   @HostListener('window:resize', ['$event'])
-    onResize(event) {
-    this.isMobile = window.innerWidth <= 670;
+    onResize() {
+    this.isMobile = window.innerWidth <= 1024;
   }
 
   ngOnDestroy(){
