@@ -1,0 +1,36 @@
+.alert-notification{
+    width: 30vw;
+    background-color: white;
+    position: fixed;
+    top: 30px;
+    right: 0;
+    left: 0;
+    margin: auto;
+    box-shadow: 0px 0px 22px 5px #00000029;
+    text-align: center;
+    animation-name: example;
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid gray;
+
+    button{
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        border: 0;
+        background: transparent;
+    }
+
+    p{
+        font-size: 18px;
+    }
+}
+
+  
+@keyframes example {
+    from {top: -30px; opacity: 0.5;}
+    to {top: 30px; opacity: 1;}
+  }
