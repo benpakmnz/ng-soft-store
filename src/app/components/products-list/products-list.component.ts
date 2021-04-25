@@ -28,7 +28,6 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.productSelectedSubscription = this.ProductsServiceService.selectedProductId
     .subscribe(
       (productId: number) => {
-        console.log(productId)
         this.productSelectedId = Number(productId);
       }
     )

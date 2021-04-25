@@ -31,7 +31,6 @@ export class ProductsService {
 
   getProduct(productId:number):Observable<productInterface>{
     this.selectedProductId.next(productId);
-    console.log(productId);
     return of(productsData.find(product => product.id === Number(productId)));
   }
 
